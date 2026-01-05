@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./js/underscore.js"></script>
+</head>
+
+<body>
+    <input class="search" type="text" />
+    <button type="button" class="send">发送</button>
+    <button type="button" class="cancal">取消</button>
+    <script>
+        const search = document.querySelector(".search")
+
+        let counter = 0
+        search.oninput = _.debounce(() => {
+
+            console.log(`发送请求(${counter++})`, search.value)
+        }, 300)
+        // search.addEventListener("input", (event) => {
+        //     console.log("输入值：", event.target.value)
+        // })
+
+    </script>
+</body>
+</html>

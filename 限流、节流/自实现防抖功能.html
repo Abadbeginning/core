@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./js/underscore.js"></script>
+</head>
+
+<body>
+    <input class="search" type="text" />
+    <button type="button" class="send">发送</button>
+    <button type="button" class="cancal">取消</button>
+    <script>
+        // 再次触发时，setTimeout需要清空，重新开始
+        let timer = null
+        function cusdebounce(fn, delay) {
+            if(timer) clearTimeout(timer)
+            // 不可能执行一次可能多次，所有需要闭包保存倒计时的状态
+            const _debounce = function(...args){
+                timer = setTimeout(() => {
+                    fn.apply(this, args)
+                    timer = null
+                }, delay)
+            }
+            _debounce.cancal = () => {
+                if(timer) clearTimeout(timer)
+            }
+            return _debounce
+        }
+    </script>
+    <script>
+        
+        const search = document.querySelector(".search")
+        const cancal = document.querySelector(".cancal")
+
+        let counter = 0
+        const shareDebounce = cusdebounce(function(event){
+            console.log("打印事件：", this, event)
+            console.log(`发送请求(${counter++})`, search.value)
+        }, 1000)
+        search.oninput = shareDebounce
+
+        cancal.onclick = () => {
+            shareDebounce.cancal()
+        }
+
+    </script>
+</body>
+</html>
